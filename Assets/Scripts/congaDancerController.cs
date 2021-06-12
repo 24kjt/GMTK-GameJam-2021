@@ -15,7 +15,7 @@ public class congaDancerController : MonoBehaviour
     {
         // _parent = gameObject.GetComponentInParent<congaHeadController>();
         Debug.Log(_parent);
-        _speed = 30;
+        _speed = 1000;
         _rb = gameObject.GetComponent<Rigidbody2D>();
 
     }
@@ -24,14 +24,17 @@ public class congaDancerController : MonoBehaviour
     void Update()
     {
         if (leader) {
-            setTarget();
-             _rb.velocity = new Vector2(target.x * _speed * Time.deltaTime, target.y * _speed * Time.deltaTime);
+            Debug.Log("We got here");
+            StartCoroutine(setTarget());
         }
     }
 
     IEnumerator setTarget() {
+        target.x = leader.position.x - transform.position.x;
+        target.y = leader.position.y - transform.position.y;
+        target.Normalize();
+        _rb.velocity = new Vector2(target.x * _speed * Time.deltaTime, target.y * _speed * Time.deltaTime);
+        Debug.Log("SET VELOCTY");
         yield return new WaitForSeconds(0.2f);
-
-        target = leader.position;
     }
 }
