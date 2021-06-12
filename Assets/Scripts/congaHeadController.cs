@@ -17,7 +17,7 @@ public class congaHeadController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         //Initialize conga line
-        for (int i = 1; i < startSize - 1; i++) {
+        for (int i = 0; i < startSize - 1; i++) {
             addDancer();
         }
     }
@@ -27,13 +27,14 @@ public class congaHeadController : MonoBehaviour
     {
         _mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _direction = (_mouse - transform.position).normalized;
-        rb.velocity = new Vector2(_direction.x * speed * Time.deltaTime, _direction.y * speed * Time.deltaTime);
+        rb.velocity = new Vector2(_direction.x * speed * Time.fixedDeltaTime, _direction.y * speed * Time.fixedDeltaTime);
+        Debug.Log("ACTUAL PSO: " + transform.position);
     }
 
     public void addDancer(){
         Transform newDancer = (Instantiate(dancerPrefab, dancers[dancers.Count - 1].position, dancers[dancers.Count - 1].rotation, transform) as GameObject).transform;
         Debug.Log(dancers.Count);
-        if (dancers.Count == 0)
+        if (dancers.Count == 1)
              newDancer.GetComponent<congaDancerController>().leader = transform;
         else
             newDancer.GetComponent<congaDancerController>().leader = dancers[dancers.Count - 1];

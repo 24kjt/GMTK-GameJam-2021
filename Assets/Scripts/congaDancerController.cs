@@ -30,10 +30,13 @@ public class congaDancerController : MonoBehaviour
     }
 
     IEnumerator setTarget() {
+        Debug.Log("LEADER: " + leader.position);
         target.x = leader.position.x - transform.position.x;
         target.y = leader.position.y - transform.position.y;
+        Debug.Log("Target: " + target);
         target.Normalize();
-        _rb.velocity = new Vector2(target.x * _speed * Time.deltaTime, target.y * _speed * Time.deltaTime);
+        Debug.Log(target * _speed * Time.fixedDeltaTime);
+        _rb.velocity = new Vector2(target.x * _speed * Time.fixedDeltaTime, target.y * _speed * Time.fixedDeltaTime);
         Debug.Log("SET VELOCTY");
         yield return new WaitForSeconds(0.2f);
     }
