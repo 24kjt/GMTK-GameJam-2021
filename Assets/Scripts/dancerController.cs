@@ -8,6 +8,7 @@ public class dancerController : MonoBehaviour
     public Transform prevDancer;        //Dancer behind
     public bool isLast = true;          //Is this the last dancer in conga line?
     public Transform waypoint = null;   //Waypoint that is being followed
+    public waypointManager wp;          //Waypoint Manager
 
     private donkeyKongaController _dk;
 
@@ -24,10 +25,20 @@ public class dancerController : MonoBehaviour
         if (!waypoint){
             waypoint = findWaypointToFollow();
         } else {
-            if(!waypoint.GetComponent<waypointController>().prevWaypoint)
-                isLast = true;
-            else
-                isLast = false;
+            isLast = !waypoint.GetComponent<waypointController>().prevWaypoint;
+
+            transform.position = Vector2.MoveTowards(this.transform.position, waypoint.transform.position, _dk.speed*Time.deltaTime);
+
+            if (transform.position == waypoint.position) {
+                //If there is a next waypoint, path to it.
+                if(waypoint.GetComponent<waypointController>().nextWaypoint) {
+                    waypoint = waypoint.GetComponent<waypointController>().nextWaypoint;
+                    //Delete waypoint if there is a next one and is last
+                    if (isLast) {
+                        wp.deleteWaypoint(waypoint.GetComponent<waypointController>().prevWaypoint);
+                    }
+                }
+            }
         }
     }
 
