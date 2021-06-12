@@ -6,7 +6,7 @@ public class congaDancerController : MonoBehaviour
 {
     public Transform leader;
     public Vector2 target;
-    private int _speed;
+    [SerializeField ]private int _speed;
     private Rigidbody2D _rb;
     private congaHeadController _parent; 
 
@@ -17,19 +17,15 @@ public class congaDancerController : MonoBehaviour
         Debug.Log(_parent);
         _speed = 1000;
         _rb = gameObject.GetComponent<Rigidbody2D>();
-
+        //StartCoroutine(setTarget());
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (leader) {
             Debug.Log("We got here");
-            StartCoroutine(setTarget());
-        }
-    }
-
-    IEnumerator setTarget() {
+            //StartCoroutine(setTarget());
         Debug.Log("LEADER: " + leader.position);
         target.x = leader.position.x - transform.position.x;
         target.y = leader.position.y - transform.position.y;
@@ -38,6 +34,20 @@ public class congaDancerController : MonoBehaviour
         Debug.Log(target * _speed * Time.fixedDeltaTime);
         _rb.velocity = new Vector2(target.x * _speed * Time.fixedDeltaTime, target.y * _speed * Time.fixedDeltaTime);
         Debug.Log("SET VELOCTY");
-        yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    IEnumerator setTarget() {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("LEADER: " + leader.position);
+        target.x = leader.position.x - transform.position.x;
+        target.y = leader.position.y - transform.position.y;
+        Debug.Log("Target: " + target);
+        target.Normalize();
+        Debug.Log(target * _speed * Time.fixedDeltaTime);
+        _rb.velocity = new Vector2(target.x * _speed * Time.fixedDeltaTime, target.y * _speed * Time.fixedDeltaTime);
+        Debug.Log("SET VELOCTY");
+        StartCoroutine(setTarget());
+        //yield return new WaitForSeconds(0.2f);
     }
 }
