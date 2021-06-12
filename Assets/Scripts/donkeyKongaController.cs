@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class donkeyKongaController : MonoBehaviour
 {
+    public List<Transform>dancers = new List<Transform>();      //List of dancers
     public float distanceTraveled = 0f;         //Cum. Dist. Travelled
     public int speed = 100;                     //Speed of conga line
     public float waypointFreq = 1f;             //How often to spawn waypoints
     public int startSize = 1;                   //Start size of conga line
-    public GameObject waypointPrefab;           //Prefab of waypoint to spawn
+    public waypointManager wp;                  //Waypoint manager
+    public GameObject dancerPrefab;             //Dancer prefab
     
     private float _lastWayPointDistance;        //Last distance that waypoint was spawned at
     private int _congaLength;                   //Lenght of conga line (#dancers)
-    private int _numWayPoints = 0;              //Total number of waypoints
-    private GameObject _lastSpawnedWaypoint;    //Last spawned waypoint
-    private GameObject _lastWaypoint;           //Last waypoint in list (no prev)
+    public Transform _lastSpawnedWaypoint;     //Last spawned waypoint
     private Vector3 _lastPosition;              //Last position of head of conga line
     private Vector2 _movement;                  //Movement vector for head of conga line
     private Rigidbody2D _rb;                    //Rigid body for head of conga line
@@ -24,11 +24,12 @@ public class donkeyKongaController : MonoBehaviour
         _lastPosition = transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
 
-        _lastSpawnedWaypoint = _lastWaypoint = Instantiate(waypointPrefab, transform.position, transform.rotation);
+        _lastSpawnedWaypoint = wp.yieldWaypoint();
         _lastWayPointDistance = distanceTraveled;
 
-        _congaLength = startSize;
-        _numWayPoints++;
+        for(int i = 0; i < startSize - 1; i++){
+            addDancer();
+        }
     }
 
     // Update is called once per frame
@@ -36,7 +37,6 @@ public class donkeyKongaController : MonoBehaviour
     {
         distanceTraveled += Vector3.Distance(transform.position, _lastPosition);
         _lastPosition = transform.position;
-        Debug.Log(distanceTraveled);
 
         if (distanceTraveled - _lastWayPointDistance > waypointFreq) {
             spawnWaypoint();
@@ -48,46 +48,20 @@ public class donkeyKongaController : MonoBehaviour
     }
 
     public void spawnWaypoint(){
+        Transform waypoint = wp.yieldWaypoint();
 
-        GameObject waypoint;
+        waypoint.GetComponent<waypointController>().prevWaypoint = _lastSpawnedWaypoint;
+        _lastSpawnedWaypoint.GetComponent<waypointController>().nextWaypoint = waypoint;
+        _lastSpawnedWaypoint = waypoint;
 
-        Debug.Log("WAYPOINTS: " + _numWayPoints + " CONGA: " + _congaLength);
+        _lastWayPointDistance = distanceTraveled;
+    }
 
-        //spawn waypoint if conga is longer than num waypoints
-        if (_numWayPoints < _congaLength) {
-            waypoint = Instantiate(waypointPrefab, transform.position, transform.rotation);
-             waypoint.GetComponent<waypointController>().prevWaypoint = _lastSpawnedWaypoint;
-             _lastSpawnedWaypoint.GetComponent<waypointController>().nextWaypoint = waypoint;
-             _lastSpawnedWaypoint = waypoint;
+    public void addDancer(){
+        Transform newDancer = Instantiate(dancerPrefab, this.transform.position, this.transform.rotation, this.transform).GetComponent<Transform>(); 
+        newDancer.transform.SetParent(this.transform);
+        dancers.Add(newDancer);
 
-            _numWayPoints++;
-        } 
-        //otherwise move last waypoint to front.
-        else {
-            //special case for one waypoint
-            if (_numWayPoints == 1) {
-                _lastWaypoint = _lastSpawnedWaypoint;
-                _lastWaypoint.transform.position = transform.position;
-            }
-            //otherwise move waypoint to front
-            else {
-                waypoint = _lastWaypoint;
-                _lastWaypoint =  _lastWaypoint.GetComponent<waypointController>().nextWaypoint;
-                
-                //Set prev and next for frontmost waypoint
-                waypoint.GetComponent<waypointController>().prevWaypoint = _lastSpawnedWaypoint;
-                waypoint.GetComponent<waypointController>().nextWaypoint =  null;
-
-                //Set pointers for old first and new last waypoint
-                _lastWaypoint.GetComponent<waypointController>().prevWaypoint = null;
-                _lastSpawnedWaypoint.GetComponent<waypointController>().nextWaypoint = waypoint;
-
-                _lastSpawnedWaypoint = waypoint;
-
-                waypoint.transform.position = transform.position; //Move waypoint to new position
-            }
-         }
-
-           _lastWayPointDistance = distanceTraveled;
+        _congaLength++;
     }
 }
