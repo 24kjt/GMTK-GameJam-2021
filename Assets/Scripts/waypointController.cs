@@ -4,18 +4,7 @@ using UnityEngine;
 
 public class waypointController : MonoBehaviour
 {
-    public GameObject prevWaypoint = null;
-    public GameObject nextWaypoint = null;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Transform prevWaypoint = null;
+    public Transform nextWaypoint = null;
+    public bool isTargeted = false;
 }
