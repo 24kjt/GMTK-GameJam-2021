@@ -14,12 +14,19 @@ public class dancerController : MonoBehaviour
     private int _dancerIndex;
     private bool _atWaypoint = false;
 
+    private int dance;
+    private Color c;
+
     // Start is called before the first frame update
     void Start()
     {
         _dk = GameObject.Find("DonkeyKonga").GetComponent<donkeyKongaController>();
         _wp = GameObject.Find("WaypointSpawner").GetComponent<waypointManager>();
         _rb = this.GetComponent<Rigidbody2D>();
+
+        dance = Mathf.FloorToInt(Random.Range(0,3));
+        c = new Color(Random.Range(0f, 1f),Random.Range(0f, 1f) ,Random.Range(0f, 1f));
+        this.GetComponent<SpriteRenderer>().color = c;
     }
 
     // Update is called once per frame
