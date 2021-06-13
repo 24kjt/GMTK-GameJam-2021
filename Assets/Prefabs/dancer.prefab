@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 757954535440197876}
   - component: {fileID: 3876732222168254437}
   - component: {fileID: 2545471022245232766}
+  - component: {fileID: -5455532877476639867}
   m_Layer: 0
   m_Name: dancer
   m_TagString: Untagged
@@ -95,7 +96,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ff8379a72486042ae1f6bff891e2b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextDancer: {fileID: 0}
-  prevDancer: {fileID: 0}
   isLast: 1
   waypoint: {fileID: 0}
+--- !u!50 &-5455532877476639867
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161838688494295628}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

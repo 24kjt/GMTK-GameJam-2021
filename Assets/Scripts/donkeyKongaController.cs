@@ -9,6 +9,7 @@ public class donkeyKongaController : MonoBehaviour
     public int speed = 100;                     //Speed of conga line
     public float waypointFreq = 1f;             //How often to spawn waypoints
     public int startSize = 1;                   //Start size of conga line
+    public float waypointMarginOfError = 0.2f;  //How close counts as being on top of waypoint
     public waypointManager wp;                  //Waypoint manager
     public GameObject dancerPrefab;             //Dancer prefab
     
@@ -19,6 +20,8 @@ public class donkeyKongaController : MonoBehaviour
     private Vector3 _lastPosition;              //Last position of head of conga line
     private Vector2 _movement;                  //Movement vector for head of conga line
     private Rigidbody2D _rb;                    //Rigid body for head of conga line
+    private Vector3 _mouse;
+    private Vector3 _direction;
 
     void Start()
     {
@@ -43,9 +46,14 @@ public class donkeyKongaController : MonoBehaviour
             spawnWaypoint();
         }
 
-        _movement.x = Input.GetAxisRaw("Horizontal");
-        _movement.y = Input.GetAxisRaw("Vertical");
-        _rb.velocity = _movement * speed * Time.fixedDeltaTime;
+        // _movement.x = Input.GetAxisRaw("Horizontal");
+        // _movement.y = Input.GetAxisRaw("Vertical");
+        // _rb.velocity = _movement * speed * Time.fixedDeltaTime;
+
+        _mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        _direction = (_mouse - transform.position).normalized;
+        _rb.velocity = new Vector2(_direction.x * speed * Time.fixedDeltaTime, _direction.y * speed * Time.fixedDeltaTime);
+       
 
         //Debug add dancer
         if (Input.GetKeyDown(KeyCode.Q))
