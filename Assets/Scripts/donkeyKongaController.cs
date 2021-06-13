@@ -14,7 +14,8 @@ public class donkeyKongaController : MonoBehaviour
     
     private float _lastWayPointDistance;        //Last distance that waypoint was spawned at
     private int _congaLength;                   //Lenght of conga line (#dancers)
-    public Transform _lastSpawnedWaypoint;     //Last spawned waypoint
+    public Transform _lastSpawnedWaypoint;      //Last spawned waypoint
+    public Transform _lastWaypoint;            //Last Waypoint
     private Vector3 _lastPosition;              //Last position of head of conga line
     private Vector2 _movement;                  //Movement vector for head of conga line
     private Rigidbody2D _rb;                    //Rigid body for head of conga line
@@ -24,7 +25,7 @@ public class donkeyKongaController : MonoBehaviour
         _lastPosition = transform.position;
         _rb = gameObject.GetComponent<Rigidbody2D>();
 
-        _lastSpawnedWaypoint = wp.yieldWaypoint();
+        _lastSpawnedWaypoint = _lastWaypoint = wp.yieldWaypoint();
         _lastWayPointDistance = distanceTraveled;
 
         for(int i = 0; i < startSize - 1; i++){
@@ -45,6 +46,10 @@ public class donkeyKongaController : MonoBehaviour
         _movement.x = Input.GetAxisRaw("Horizontal");
         _movement.y = Input.GetAxisRaw("Vertical");
         _rb.velocity = _movement * speed * Time.fixedDeltaTime;
+
+        //Debug add dancer
+        if (Input.GetKeyDown(KeyCode.Q))
+            addDancer();
     }
 
     public void spawnWaypoint(){
@@ -58,10 +63,33 @@ public class donkeyKongaController : MonoBehaviour
     }
 
     public void addDancer(){
-        Transform newDancer = Instantiate(dancerPrefab, this.transform.position, this.transform.rotation, this.transform).GetComponent<Transform>(); 
+
+        Transform waypoint = wp.yieldWaypoint();
+        Transform newDancer;
+
+        //Special case for first dancer
+        if (dancers.Count == 0) {
+            newDancer = Instantiate(dancerPrefab, this.transform.position, this.transform.rotation, this.transform).GetComponent<Transform>();
+            wp.transform.position = this.transform.position;
+        } else {
+            newDancer = Instantiate(dancerPrefab, dancers[dancers.Count - 1].transform.position, dancers[dancers.Count - 1].transform.rotation, this.transform).GetComponent<Transform>(); 
+            wp.transform.position = dancers[dancers.Count - 1].transform.position;
+
+            //last is no longer last :O
+            dancers[dancers.Count - 1].GetComponent<dancerController>().isLast = false;
+        }
+        
+        //Pointers for new waypoint
+        _lastWaypoint.GetComponent<waypointController>().prevWaypoint = waypoint;
+        waypoint.GetComponent<waypointController>().nextWaypoint = _lastWaypoint;
+        _lastWaypoint = waypoint;
+
+        //Set waypoint for new dancer
+        newDancer.GetComponent<dancerController>().waypoint = waypoint;
+
         newDancer.transform.SetParent(this.transform);
         dancers.Add(newDancer);
-
+        newDancer.GetComponent<dancerController>().setDancerIndex(dancers.Count - 1);
         _congaLength++;
     }
 }
