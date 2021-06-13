@@ -37,6 +37,7 @@ public class waypointManager : MonoBehaviour
 
         wc.nextWaypoint = wc.prevWaypoint = null;
         waypoint.SetParent(this.transform);
-        waypoint.GetComponent<GameObject>().SetActive(false);
+        wc.transform.position =this.transform.position;
+        waypoint.gameObject.SetActive(false);
     }
 }

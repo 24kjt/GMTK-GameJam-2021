@@ -85,6 +85,7 @@ public class donkeyKongaController : MonoBehaviour
         _lastWaypoint = waypoint;
 
         //Set waypoint for new dancer
+        waypoint.GetComponent<waypointController>().isTargeted = true;
         newDancer.GetComponent<dancerController>().waypoint = waypoint;
 
         newDancer.transform.SetParent(null);
