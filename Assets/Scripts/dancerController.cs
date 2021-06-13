@@ -34,8 +34,9 @@ public class dancerController : MonoBehaviour
                         // wp.deleteWaypoint(waypoint.GetComponent<waypointController>().prevWaypoint);
                     } else {
                         //otherwise flag new waypoint as available for targeting
-                        waypoint.GetComponent<waypointController>().prevWaypoint.GetComponent<waypointController>().isTargeted = false;
+                       
                     }
+                     waypoint.GetComponent<waypointController>().prevWaypoint.GetComponent<waypointController>().isTargeted = false;
                 }
             }
         }
