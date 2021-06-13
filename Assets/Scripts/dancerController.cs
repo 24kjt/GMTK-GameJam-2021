@@ -28,12 +28,14 @@ public class dancerController : MonoBehaviour
         if (waypoint)
         {
             // transform.position = Vector2.MoveTowards(this.transform.position, waypoint.transform.position, _dk.speed*Time.deltaTime);
-            if (!_atWaypoint) {
-                _direction = (waypoint.transform.position - this.transform.position).normalized;
-                _rb.velocity = new Vector2(_direction.x * _dk.speed * Time.fixedDeltaTime, _direction.y * _dk.speed * Time.fixedDeltaTime);
-            } else {
-                _rb.velocity = Vector2.zero;
-            }
+            // if (!_atWaypoint) {
+            //     _direction = (waypoint.transform.position - this.transform.position).normalized;
+            //     _rb.velocity = new Vector2(_direction.x * _dk.speed * Time.fixedDeltaTime, _direction.y * _dk.speed * Time.fixedDeltaTime);
+            // } else {
+            //     _rb.velocity = Vector2.zero;
+            // }
+
+            transform.position = Vector3.Lerp(transform.position, waypoint.transform.position, Time.deltaTime * _dk.speed / 100);
 
             if (Mathf.Abs(transform.position.magnitude - waypoint.transform.position.magnitude) < _dk.waypointMarginOfError) {
                 //If there is a next waypoint, path to it.
