@@ -35,8 +35,9 @@ public class dancerController : MonoBehaviour
             //     _rb.velocity = Vector2.zero;
             // }
 
-            transform.position = Vector3.Lerp(transform.position, waypoint.transform.position, Time.deltaTime * _dk.speed / 100);
-
+            // transform.position = Vector3.Lerp(transform.position, waypoint.transform.position, Time.deltaTime * _dk.speed / 100);
+            Vector3 test = Vector3.zero;
+            transform.position = Vector3.SmoothDamp(transform.position, waypoint.transform.position, ref test, .03f);
             if (Mathf.Abs(transform.position.magnitude - waypoint.transform.position.magnitude) < _dk.waypointMarginOfError) {
                 //If there is a next waypoint, path to it.
                 if(waypoint.GetComponent<waypointController>().nextWaypoint && !waypoint.GetComponent<waypointController>().nextWaypoint.GetComponent<waypointController>().isTargeted ) {

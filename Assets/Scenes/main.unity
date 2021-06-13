@@ -1642,9 +1642,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dancers: []
   distanceTraveled: 0
-  speed: 100
+  speed: 600
   waypointFreq: 1
-  startSize: 4
+  startSize: 3
+  waypointMarginOfError: 0.4
   wp: {fileID: 366152933}
   dancerPrefab: {fileID: 1161838688494295628, guid: 7317434729db04e4198fa165d0e29eb0, type: 3}
   _lastSpawnedWaypoint: {fileID: 0}
