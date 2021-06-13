@@ -70,10 +70,10 @@ public class donkeyKongaController : MonoBehaviour
         //Special case for first dancer
         if (dancers.Count == 0) {
             newDancer = Instantiate(dancerPrefab, this.transform.position, this.transform.rotation, this.transform).GetComponent<Transform>();
-            wp.transform.position = this.transform.position;
+            waypoint.transform.position = this.transform.position;
         } else {
             newDancer = Instantiate(dancerPrefab, dancers[dancers.Count - 1].transform.position, dancers[dancers.Count - 1].transform.rotation, this.transform).GetComponent<Transform>(); 
-            wp.transform.position = dancers[dancers.Count - 1].transform.position;
+            waypoint.transform.position = dancers[dancers.Count - 1].transform.position;
 
             //last is no longer last :O
             dancers[dancers.Count - 1].GetComponent<dancerController>().isLast = false;
@@ -87,7 +87,7 @@ public class donkeyKongaController : MonoBehaviour
         //Set waypoint for new dancer
         newDancer.GetComponent<dancerController>().waypoint = waypoint;
 
-        newDancer.transform.SetParent(this.transform);
+        newDancer.transform.SetParent(null);
         dancers.Add(newDancer);
         newDancer.GetComponent<dancerController>().setDancerIndex(dancers.Count - 1);
         _congaLength++;

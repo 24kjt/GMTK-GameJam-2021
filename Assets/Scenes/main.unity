@@ -1063,8 +1063,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366152932}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.071, y: -0.037, z: -5.8456774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1043059643}
@@ -1644,10 +1644,11 @@ MonoBehaviour:
   distanceTraveled: 0
   speed: 100
   waypointFreq: 1
-  startSize: 2
+  startSize: 4
   wp: {fileID: 366152933}
   dancerPrefab: {fileID: 1161838688494295628, guid: 7317434729db04e4198fa165d0e29eb0, type: 3}
   _lastSpawnedWaypoint: {fileID: 0}
+  _lastWaypoint: {fileID: 0}
 --- !u!50 &430967765
 Rigidbody2D:
   serializedVersion: 4
@@ -1677,7 +1678,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430967762}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.2476, y: -0.77394, z: -3.8594735}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 366152934}
