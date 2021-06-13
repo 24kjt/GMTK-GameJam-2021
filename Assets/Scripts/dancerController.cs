@@ -11,6 +11,7 @@ public class dancerController : MonoBehaviour
     public waypointManager wp;          //Waypoint Manager
 
     private donkeyKongaController _dk;
+    private int _dancerIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -21,21 +22,24 @@ public class dancerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //If no waypoint
-        if (!waypoint){
-            waypoint = findWaypointToFollow();
-        } else {
-            isLast = !waypoint.GetComponent<waypointController>().prevWaypoint;
-
+        if (waypoint)
+        {
             transform.position = Vector2.MoveTowards(this.transform.position, waypoint.transform.position, _dk.speed*Time.deltaTime);
 
-            if (transform.position == waypoint.position) {
+            Debug.Log("TRAN" + transform.position);
+            Debug.Log("WYP" + waypoint.transform.position);
+
+            if (transform.position == waypoint.transform.position) {
+                Debug.Log("NEXT WAYPOINT");
                 //If there is a next waypoint, path to it.
-                if(waypoint.GetComponent<waypointController>().nextWaypoint) {
+                if(waypoint.GetComponent<waypointController>().nextWaypoint && !waypoint.GetComponent<waypointController>().nextWaypoint.GetComponent<waypointController>().isTargeted ) {
                     waypoint = waypoint.GetComponent<waypointController>().nextWaypoint;
                     //Delete waypoint if there is a next one and is last
                     if (isLast) {
                         wp.deleteWaypoint(waypoint.GetComponent<waypointController>().prevWaypoint);
+                    } else {
+                        //otherwise flag new waypoint as available for targeting
+                        waypoint.GetComponent<waypointController>().prevWaypoint.GetComponent<waypointController>().isTargeted = false;
                     }
                 }
             }
@@ -67,5 +71,9 @@ public class dancerController : MonoBehaviour
         }
 
         return cur; 
+    }
+
+    public void setDancerIndex(int dancerIndex) {
+        this._dancerIndex = dancerIndex;
     }
 }
